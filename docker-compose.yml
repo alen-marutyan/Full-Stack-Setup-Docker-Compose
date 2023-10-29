@@ -1,0 +1,54 @@
+version: '3'
+services:
+  # Next.js app
+  nextjs-app:
+    image: node:18.18.0 # You can use a different Node.js version if needed
+    container_name: front
+    working_dir: /app
+    volumes:
+      - ./next:/app # Mount your Next.js app directory
+    environment:
+      - NODE_ENV=production # Set your desired Node environment
+    ports:
+      - "3000:3000" # Map the app's port to the host
+    command: sh -c "npm install && npm run build && npm install -g serve && serve -s build"
+    depends_on:
+      - server # Ensure the Express.js service is started first
+    networks:
+      - my-network
+
+  # Express.js app
+  server:
+    image: node:18.18.0 # You can use a different Node.js version if needed
+    container_name: server
+    working_dir: /app
+    volumes:
+      - ./server:/app # Mount your Express.js app directory
+    environment:
+      - NODE_ENV=production # Set your desired Node environment
+    ports:
+      - "8080:8080" # Map the app's port to the host
+    command: npm start # Adjust this according to your app's start command
+    depends_on:
+      - mongo # Ensure the
+    networks:
+      - my-network
+
+#   MongoDB
+  mongo:
+    image: mongo:5
+    container_name: mongo
+    environment:
+      MONGO_INITDB_DATABASE: "Test-db-28"
+    volumes:
+      - mongo-data:/data/db # Persist MongoDB data
+    ports:
+      - "27017:27017" # Map the MongoDB port to the host
+    networks:
+      - my-network
+
+volumes:
+  mongo-data:
+
+networks:
+  my-network:

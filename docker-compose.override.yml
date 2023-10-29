@@ -1,0 +1,9 @@
+version: '3'
+services:
+  nextjs-app:
+    volumes:
+      - /home/alen/Desktop/full-stack-docker-compose/front:/app
+
+  server:
+    volumes:
+      - /home/alen/Desktop/full-stack-docker-compose/server:/app
