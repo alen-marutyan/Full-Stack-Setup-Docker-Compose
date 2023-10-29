@@ -28,7 +28,7 @@ services:
       - NODE_ENV=production # Set your desired Node environment
     ports:
       - "8080:8080" # Map the app's port to the host
-    command: npm start # Adjust this according to your app's start command
+    command: sh -c "npm install && npm start" # Adjust this according to your app's start command
     depends_on:
       - mongo # Ensure the
     networks:
